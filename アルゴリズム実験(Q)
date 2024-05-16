@@ -1,0 +1,54 @@
+class KQueue:
+    def __init__(self, size=10):
+        self.size = size
+        self.data = [''] * size
+        self.head = 0
+        self.tail = 0
+
+    def enter(self, text):
+        tmp = (self.tail + 1) % self.size
+        if self.head == tmp:
+            print(f"Buffer Overflow. \"{text}\" isn't entered.")
+            return False
+        self.data[self.tail] = text
+        self.tail = tmp
+        return True
+
+    def output(self):
+        if self.head == self.tail:
+            print("Queue is empty.")
+            return None
+        ret = self.data[self.head]
+        self.head = (self.head + 1) % self.size
+        return ret
+
+    def num(self):
+        return (self.tail - self.head + self.size) % self.size
+
+    def display(self):
+        if self.head == self.tail:
+            print("Queue is empty.")
+            return
+        print("Current Queue:")
+        idx = self.head
+        while idx != self.tail:
+            print(self.data[idx])
+            idx = (idx + 1) % self.size
+
+# テストプログラム
+Q = KQueue(4)
+
+Q.enter('dog')
+Q.enter('cat')
+Q.enter('lion')
+Q.enter('monkey')
+
+print(Q.output())
+
+Q.enter('monkey')
+
+print(Q.output())
+
+Q.enter('elephant')
+
+Q.display()
